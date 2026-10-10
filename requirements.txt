@@ -1,0 +1,3 @@
+# GrowWise Dependencies - Lightweight (<= 8GB RAM friendly)
+# Standard library handles testing (unittest) and local HTTP inference (urllib)
+streamlit>=1.30.0,<2.0.0

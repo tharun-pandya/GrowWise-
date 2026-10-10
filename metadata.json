@@ -1,0 +1,6 @@
+{
+  "name": "GrowWise - AI-Powered Garden Planner",
+  "description": "Lightweight, grounded garden planner for Hacktoberfest 2026 with deterministic suitability rules and open-weight Gemma AI explanations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
