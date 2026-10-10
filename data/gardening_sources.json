@@ -1,0 +1,134 @@
+[
+  {
+    "id": "usda_ext_basil",
+    "organization": "USDA Cooperative Extension System",
+    "title": "Growing Basil in Home Gardens and Containers",
+    "url": "https://www.nifa.usda.gov/about-nifa/how-we-work/extension",
+    "relevant_crops": ["sweet_basil"],
+    "topic": "Herb Cultivation and Frost Sensitivity",
+    "region": "United States (Zones 4-10)",
+    "date_checked": "2026-09-15",
+    "verification_status": "verified"
+  },
+  {
+    "id": "cornell_tomato",
+    "organization": "Cornell University Cooperative Extension",
+    "title": "Home Gardening: Tomatoes and Solanaceous Crops",
+    "url": "https://gardening.cals.cornell.edu/",
+    "relevant_crops": ["cherry_tomato"],
+    "topic": "Soil Depth, Support Systems, and Blossom End Rot",
+    "region": "Northeast / Temperate North America",
+    "date_checked": "2026-09-18",
+    "verification_status": "verified"
+  },
+  {
+    "id": "penn_state_lettuce",
+    "organization": "Penn State Extension",
+    "title": "Salad Greens: Cool-Season Production and Heat Bolting Management",
+    "url": "https://extension.psu.edu/vegetables-in-home-gardens",
+    "relevant_crops": ["butterhead_lettuce"],
+    "topic": "Leafy Greens, Succession Sowing, and Partial Shade",
+    "region": "Mid-Atlantic / Temperate Zone",
+    "date_checked": "2026-09-20",
+    "verification_status": "verified"
+  },
+  {
+    "id": "umn_spinach",
+    "organization": "University of Minnesota Extension",
+    "title": "Growing Spinach and Cold-Tolerant Greens in Shaded Spaces",
+    "url": "https://extension.umn.edu/vegetables/growing-spinach",
+    "relevant_crops": ["baby_spinach"],
+    "topic": "Cold Hardiness and Low-Sun Adaptability",
+    "region": "Upper Midwest / Cold Climate (Zones 2-8)",
+    "date_checked": "2026-09-21",
+    "verification_status": "verified"
+  },
+  {
+    "id": "rhs_mint",
+    "organization": "Royal Horticultural Society (RHS)",
+    "title": "Cultivating Mint: Managing Invasive Rhizomes in Containers",
+    "url": "https://www.rhs.org.uk/herbs/mint/grow-your-own",
+    "relevant_crops": ["peppermint"],
+    "topic": "Invasive Root Containment and Soil Moisture",
+    "region": "Temperate Maritime and Continental",
+    "date_checked": "2026-09-22",
+    "verification_status": "verified"
+  },
+  {
+    "id": "purdue_radish",
+    "organization": "Purdue University Extension",
+    "title": "Radishes and Fast Root Crops for Home Gardeners",
+    "url": "https://www.purdue.edu/hla/sites/yardandgarden/",
+    "relevant_crops": ["french_radish"],
+    "topic": "Soil Tilth, Spacing, and Moisture Uniformity",
+    "region": "Midwest / Global Temperate",
+    "date_checked": "2026-09-25",
+    "verification_status": "verified"
+  },
+  {
+    "id": "uf_ifas_pepper",
+    "organization": "University of Florida IFAS Extension",
+    "title": "Warm-Season Bell Peppers: Soil Temperature and Blossom Set",
+    "url": "https://edis.ifas.ufl.edu/",
+    "relevant_crops": ["bell_pepper"],
+    "topic": "Fruiting Temperatures and Support",
+    "region": "Southeast / Subtropical and Temperate Summer",
+    "date_checked": "2026-09-28",
+    "verification_status": "verified"
+  },
+  {
+    "id": "osu_carrot",
+    "organization": "Oregon State University Extension Service",
+    "title": "Growing Carrots in Soils and Raised Beds: Preventing Bifurcation",
+    "url": "https://extension.oregonstate.edu/",
+    "relevant_crops": ["danvers_carrot"],
+    "topic": "Root Depth, Sifting Heavy Clay, and Seedbed Care",
+    "region": "Pacific Northwest / Temperate",
+    "date_checked": "2026-09-30",
+    "verification_status": "verified"
+  },
+  {
+    "id": "isu_beans",
+    "organization": "Iowa State University Extension and Outreach",
+    "title": "Bush Green Beans: Nitrogen Fixation and Direct Seeding",
+    "url": "https://www.extension.iastate.edu/yardgarden/",
+    "relevant_crops": ["bush_green_bean"],
+    "topic": "Legume Inoculation and Compact Bush Spacing",
+    "region": "Midwest / Continental",
+    "date_checked": "2026-10-01",
+    "verification_status": "verified"
+  },
+  {
+    "id": "clemson_rosemary",
+    "organization": "Clemson University Cooperative Extension",
+    "title": "Perennial Herbs: Drainage and Winter Hardiness of Rosemary",
+    "url": "https://hgic.clemson.edu/",
+    "relevant_crops": ["rosemary"],
+    "topic": "Sharp Drainage and Root Rot Prevention",
+    "region": "Southeast / Mediterranean and Arid zones",
+    "date_checked": "2026-10-02",
+    "verification_status": "verified"
+  },
+  {
+    "id": "cornell_berry",
+    "organization": "Cornell University Berry Diagnostic Tool",
+    "title": "Alpine Strawberries for Small Spaces and Containers",
+    "url": "https://fruit.cornell.edu/berry/",
+    "relevant_crops": ["alpine_strawberry"],
+    "topic": "Clumping Strawberries, Crown Depth, and Straw Mulch",
+    "region": "Northeast / Cool Temperate",
+    "date_checked": "2026-10-03",
+    "verification_status": "verified"
+  },
+  {
+    "id": "ncsu_marigold",
+    "organization": "North Carolina State University Extension",
+    "title": "Companion Planting with French Marigolds for Natural Pest Mitigation",
+    "url": "https://gardening.ces.ncsu.edu/",
+    "relevant_crops": ["french_marigold"],
+    "topic": "Beneficial Pollinators and Root Nematode Deterrence",
+    "region": "Global Subtropical and Temperate",
+    "date_checked": "2026-10-05",
+    "verification_status": "verified"
+  }
+]

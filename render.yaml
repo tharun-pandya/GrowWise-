@@ -1,0 +1,38 @@
+services:
+  # 1. Full-Stack GrowWise Web Application (Frontend + Express API)
+  - type: web
+    name: growwise-web
+    env: node
+    plan: free
+    region: oregon
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: AI_PROVIDER_TYPE
+        value: offline  # Or 'open_weight' when configured with an external endpoint
+      - key: OPEN_WEIGHT_ENDPOINT_URL
+        sync: false     # Set to e.g. https://api.together.xyz/v1/chat/completions or vLLM service
+      - key: OPEN_WEIGHT_MODEL_NAME
+        value: google/gemma-2-2b-it
+      - key: OPEN_WEIGHT_API_KEY
+        sync: false
+
+  # 2. (Optional Decoupled) Python FastAPI Backend Service
+  - type: web
+    name: growwise-api-python
+    env: python
+    plan: free
+    region: oregon
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.12
+      - key: AI_PROVIDER_TYPE
+        value: offline
+      - key: CORS_ORIGINS
+        value: "*"
