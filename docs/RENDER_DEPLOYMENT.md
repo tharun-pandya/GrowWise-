@@ -1,61 +1,85 @@
-# 🚀 GrowWise - Render Deployment Guide
+# 🚀 GrowWise - Render Deployment Guide (React + FastAPI)
 
-GrowWise is designed for straightforward deployment on [Render](https://render.com).
-
-Because Render's free tier provides 512 MB RAM, **do not attempt to run local 10GB LLMs directly on the free tier container**. Instead, GrowWise supports two production modes:
-
-1. **Deterministic Offline Mode (Default, Recommended for Free Tier)**:
-   - Zero LLM memory overhead.
-   - Generates 100% verified agricultural guidance synthesized from `data/crops.json` and `data/gardening_sources.json`.
-   - Starts instantly and uses <100 MB RAM.
-
-2. **Open-Weight Inference Mode (Gemma 2 2B / 9B via Remote Endpoint)**:
-   - Configure a remote OpenAI-compatible inference endpoint serving `google/gemma-2-2b-it` (e.g., Together AI, DeepInfra, Hugging Face Dedicated Endpoint, or your private vLLM instance).
-   - Your API key and endpoint URL remain secure on the server.
+GrowWise uses **React + TypeScript + Vite** for the frontend and **FastAPI** for the backend.
+**Streamlit has been completely removed.**
 
 ---
 
-## Option A: Full-Stack Web App (Recommended - 1 Click)
+## Architecture Overview on Render
 
-Deploy the unified Vite + Node/Express app that serves the frontend, static assets, and API routes.
+GrowWise deploys as two decoupled services defined in `render.yaml`:
 
-- **Environment**: `Node`
+1. **Frontend**: Render **Static Site** (`dist`) built with Vite.
+2. **Backend**: Render **Web Service** (Python FastAPI) providing deterministic evaluations and open-weight AI routing.
+
+```
+                      ┌────────────────────────────────────────┐
+                      │   Render Static Site: Frontend         │
+                      │   (React + TypeScript + Vite)          │
+                      │   Publish Directory: dist              │
+                      └──────────────────┬─────────────────────┘
+                                         │
+                         Calls /api/* via│ VITE_API_BASE_URL
+                                         ▼
+                      ┌────────────────────────────────────────┐
+                      │   Render Web Service: Backend          │
+                      │   (Python FastAPI + uvicorn)           │
+                      │   Port: $PORT | Health: /health        │
+                      └──────────────────┬─────────────────────┘
+                                         │
+                           Optional REST │ (Ollama / vLLM / remote)
+                                         ▼
+                      ┌────────────────────────────────────────┐
+                      │   Open-Weight Gemma 2 2B Inference     │
+                      │   or Offline Grounded Synthesizer      │
+                      └────────────────────────────────────────┘
+```
+
+---
+
+## 1. Automatic Deployment via Blueprint (`render.yaml`)
+
+1. Push your repository to GitHub.
+2. In the Render Dashboard, click **New +** → **Blueprint**.
+3. Select your GitHub repository containing `render.yaml`.
+4. Render will automatically provision both services:
+   - **`growwise-frontend`**: Static Site with build command `npm install && npm run build`, publish directory `dist`.
+   - **`growwise-api`**: Python Web Service with start command `uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT`.
+
+---
+
+## 2. Manual Setup (Alternative)
+
+### Service 1: React Frontend (Static Site)
+- **Type**: Static Site
+- **Name**: `growwise-frontend`
 - **Build Command**: `npm install && npm run build`
-- **Start Command**: `npm start`
-- **Health Check Path**: `/api/health`
+- **Publish Directory**: `dist`
+- **Environment Variables**:
+  - `VITE_API_BASE_URL`: `https://your-growwise-api.onrender.com` (URL of your backend service)
 
-### Environment Variables:
-| Variable | Value | Description |
-| :--- | :--- | :--- |
-| `NODE_ENV` | `production` | Enables production bundle serving |
-| `PORT` | `10000` | Port automatically assigned by Render |
-| `AI_PROVIDER_TYPE` | `offline` (or `open_weight`) | Model provider selection |
-| `OPEN_WEIGHT_ENDPOINT_URL` | *(optional)* | e.g. `https://api.together.xyz/v1/chat/completions` |
-| `OPEN_WEIGHT_MODEL_NAME` | *(optional)* | `google/gemma-2-2b-it` |
-| `OPEN_WEIGHT_API_KEY` | *(optional)* | API key for the remote open-weight inference provider |
-
----
-
-## Option B: Decoupled Python FastAPI Backend
-
-If you prefer deploying a dedicated Python service:
-
-- **Environment**: `Python`
+### Service 2: Python Backend (Web Service)
+- **Type**: Web Service
+- **Name**: `growwise-api`
+- **Runtime**: Python 3
 - **Build Command**: `pip install -r backend/requirements.txt`
 - **Start Command**: `uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT`
 - **Health Check Path**: `/health`
-
-### Environment Variables:
-| Variable | Value | Description |
-| :--- | :--- | :--- |
-| `PYTHON_VERSION` | `3.10.12` | Python runtime version |
-| `CORS_ORIGINS` | `https://your-frontend.onrender.com` | Allowed frontend domains |
-| `AI_PROVIDER_TYPE` | `offline` | Default safe offline mode |
+- **Environment Variables**:
+  - `PYTHON_VERSION`: `3.10.12`
+  - `AI_PROVIDER_TYPE`: `offline` (or `open_weight` when configured with a remote endpoint)
+  - `CORS_ORIGINS`: `https://your-growwise-frontend.onrender.com`
+  - `OPEN_WEIGHT_ENDPOINT_URL`: *(optional remote OpenAI-compatible endpoint e.g. Together AI, DeepInfra, vLLM)*
+  - `OPEN_WEIGHT_MODEL_NAME`: `google/gemma-2-2b-it`
+  - `OPEN_WEIGHT_API_KEY`: *(optional remote API key)*
 
 ---
 
-## 🔒 Security and Privacy Guarantees
+## 3. Important Production Notes
 
-- **No GPS tracking**: Users provide friendly location strings (e.g. "Denver, CO" or "USDA Zone 7"), never device GPS coordinates.
-- **No Personal Identifiable Info (PII)**: User sessions, outdoor time logs, and task checklists are stored exclusively in the browser's `localStorage`.
-- **Zero API Keys in Client Code**: All inference keys remain strictly on the backend server.
+1. **Free Tier RAM Budget**:
+   Render's free tier provides 512 MB RAM. The backend defaults to `AI_PROVIDER_TYPE=offline`, which uses <80 MB RAM and synthesizes verified advice without downloading large neural weights.
+2. **Open-Weight Gemma in Production**:
+   Do not attempt to run a local Ollama daemon on Render. To use Gemma in production, configure `OPEN_WEIGHT_ENDPOINT_URL` to point to a remote OpenAI-compatible endpoint hosting `google/gemma-2-2b-it`.
+3. **No Streamlit**:
+   The frontend is 100% React, TypeScript, and Vite. There are no Python GUI dependencies.

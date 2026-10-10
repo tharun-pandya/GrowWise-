@@ -1,4 +1,5 @@
 import { GardenProfileData, CropEvaluation } from '../types';
+import { getApiUrl } from './apiConfig';
 
 export interface AIExplanationResult {
   success: boolean;
@@ -113,7 +114,7 @@ ${selected
 
     // 3. Gemini Development Assistant
     try {
-      const res = await fetch('/api/ai-explain', {
+      const res = await fetch(getApiUrl('/api/ai-explain'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt }),

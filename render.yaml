@@ -1,38 +1,41 @@
+# Render Blueprint: GrowWise - Grounded AI-Powered Garden Planner
+# React + TypeScript + Vite Static Site (Frontend) & FastAPI Web Service (Backend)
 services:
-  # 1. Full-Stack GrowWise Web Application (Frontend + Express API)
-  - type: web
-    name: growwise-web
-    env: node
-    plan: free
-    region: oregon
+  # 1. Frontend: React + TypeScript + Vite Static Site
+  - type: static
+    name: growwise-frontend
     buildCommand: npm install && npm run build
-    startCommand: npm start
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
     envVars:
-      - key: NODE_ENV
-        value: production
-      - key: PORT
-        value: 10000
-      - key: AI_PROVIDER_TYPE
-        value: offline  # Or 'open_weight' when configured with an external endpoint
-      - key: OPEN_WEIGHT_ENDPOINT_URL
-        sync: false     # Set to e.g. https://api.together.xyz/v1/chat/completions or vLLM service
-      - key: OPEN_WEIGHT_MODEL_NAME
-        value: google/gemma-2-2b-it
-      - key: OPEN_WEIGHT_API_KEY
-        sync: false
+      - key: VITE_API_BASE_URL
+        fromService:
+          type: web
+          name: growwise-api
+          property: host
 
-  # 2. (Optional Decoupled) Python FastAPI Backend Service
+  # 2. Backend: Python FastAPI Web Service
   - type: web
-    name: growwise-api-python
+    name: growwise-api
     env: python
     plan: free
     region: oregon
     buildCommand: pip install -r backend/requirements.txt
     startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
     envVars:
       - key: PYTHON_VERSION
         value: 3.10.12
       - key: AI_PROVIDER_TYPE
-        value: offline
+        value: offline  # Default zero-RAM offline synthesizer; or 'open_weight' when configured
       - key: CORS_ORIGINS
         value: "*"
+      - key: OPEN_WEIGHT_ENDPOINT_URL
+        sync: false     # Set to e.g. https://api.together.xyz/v1/chat/completions or private vLLM service
+      - key: OPEN_WEIGHT_MODEL_NAME
+        value: google/gemma-2-2b-it
+      - key: OPEN_WEIGHT_API_KEY
+        sync: false

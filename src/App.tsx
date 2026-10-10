@@ -16,6 +16,7 @@ import {
   generateWeeklyPlan,
   LOCAL_CROPS_DATABASE
 } from './services/recommendationEngine';
+import { getApiUrl } from './services/apiConfig';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<ActiveView>('profile');
@@ -84,7 +85,7 @@ export default function App() {
     setIsRunningTests(true);
     setHasRunTests(true);
     try {
-      const res = await fetch('/api/run-tests', { method: 'POST' });
+      const res = await fetch(getApiUrl('/api/run-tests'), { method: 'POST' });
       const data = await res.json();
       setTestsSuccess(data.success);
       setTestOutput(data.output || 'No output recorded');

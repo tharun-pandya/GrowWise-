@@ -12,6 +12,8 @@ import {
   Code2
 } from 'lucide-react';
 
+import { getApiUrl } from '../services/apiConfig';
+
 interface DeploymentViewProps {
   onRunTests: () => void;
   isRunningTests: boolean;
@@ -33,7 +35,7 @@ export const DeploymentView: React.FC<DeploymentViewProps> = ({
   const [activeSubTab, setActiveSubTab] = useState<'tests' | 'render' | 'code' | 'dev_post'>('tests');
 
   useEffect(() => {
-    fetch('/api/python-files')
+    fetch(getApiUrl('/api/python-files'))
       .then((r) => r.json())
       .then((d) => {
         if (d.success && d.files) {

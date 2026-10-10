@@ -36,6 +36,7 @@ if HAS_FASTAPI:
     )
 
     @app.get("/health")
+    @app.get("/api/health")
     def health_check():
         return {
             "status": "healthy",
@@ -46,14 +47,17 @@ if HAS_FASTAPI:
         }
 
     @app.get("/crops")
+    @app.get("/api/crops")
     def get_crops():
         return load_crops_data()
 
     @app.get("/sources")
+    @app.get("/api/sources")
     def get_sources():
         return load_sources_data()
 
     @app.post("/recommendations")
+    @app.post("/api/recommendations")
     def get_recommendations(profile: GardenProfile):
         errors = profile.validate_inputs()
         if errors:
@@ -66,6 +70,7 @@ if HAS_FASTAPI:
         }
 
     @app.post("/plan/generate")
+    @app.post("/api/plan/generate")
     def generate_plan(profile: GardenProfile):
         errors = profile.validate_inputs()
         if errors:
@@ -75,6 +80,8 @@ if HAS_FASTAPI:
         return plan.dict()
 
     @app.post("/ai/explain")
+    @app.post("/api/ai-explain")
+    @app.post("/api/ai/explain")
     def explain_plan(profile: GardenProfile):
         suitable, _ = engine.evaluate_profile(profile)
         provider = get_model_provider()
