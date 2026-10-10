@@ -10,9 +10,13 @@ from backend.app.garden_engine import DeterministicGardenEngine, load_crops_data
 from backend.app.model_provider import get_model_provider
 from backend.app.validators import validate_ai_text_safety
 
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+DIST_DIR = os.path.abspath(os.path.join(CURRENT_DIR, "..", "..", "dist"))
+
 try:
     from fastapi import FastAPI, HTTPException, Body
     from fastapi.middleware.cors import CORSMiddleware
+    from fastapi.responses import FileResponse, JSONResponse
     HAS_FASTAPI = True
 except ImportError:
     HAS_FASTAPI = False
@@ -29,11 +33,46 @@ if HAS_FASTAPI:
     origins = os.environ.get("CORS_ORIGINS", "*").split(",")
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=origins,
+        allow_origins=origins if "*" not in origins else ["*"],
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    # Mount Vite static assets (/assets) if frontend was compiled to dist/
+    if os.path.exists(os.path.join(DIST_DIR, "assets")):
+        try:
+            from fastapi.staticfiles import StaticFiles
+            app.mount("/assets", StaticFiles(directory=os.path.join(DIST_DIR, "assets")), name="assets")
+        except Exception:
+            pass
+
+    @app.get("/")
+    def root():
+        """
+        Root endpoint:
+        If React frontend is compiled in dist/index.html, serve the React app directly.
+        Otherwise, return backend health info with endpoint guide.
+        """
+        dist_index = os.path.join(DIST_DIR, "index.html")
+        if os.path.exists(dist_index):
+            return FileResponse(dist_index)
+        return {
+            "status": "healthy",
+            "service": "GrowWise API (FastAPI Backend)",
+            "message": "GrowWise backend is online. When deployed as a Render Static Site, the React frontend is served from your frontend URL.",
+            "crops_count": len(engine.crops),
+            "sources_count": len(engine.sources),
+            "documentation": "/docs",
+            "endpoints": {
+                "health": "/health",
+                "crops": "/crops",
+                "sources": "/sources",
+                "recommendations": "POST /recommendations",
+                "plan_generate": "POST /plan/generate",
+                "ai_explain": "POST /ai/explain",
+            },
+        }
 
     @app.get("/health")
     @app.get("/api/health")
