@@ -91,6 +91,7 @@ async function startServer() {
         'backend/app/validators.py': readFileSafe('backend/app/validators.py'),
         'backend/tests/test_backend.py': readFileSafe('backend/tests/test_backend.py'),
         'render.yaml': readFileSafe('render.yaml'),
+        'build.sh': readFileSafe('build.sh'),
         'docs/RENDER_DEPLOYMENT.md': readFileSafe('docs/RENDER_DEPLOYMENT.md'),
         'docs/HACKTOBERFEST_SUBMISSION.md': readFileSafe('docs/HACKTOBERFEST_SUBMISSION.md'),
         'README.md': readFileSafe('README.md'),

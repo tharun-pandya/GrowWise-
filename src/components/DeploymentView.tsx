@@ -175,22 +175,24 @@ GrowWise turns screen time into gardening time. It is a lightweight, grounded ga
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-4 rounded-xl border border-stone-200 bg-stone-50/50 space-y-2">
-              <span className="font-bold text-stone-900 block text-xs">Option A: Full-Stack Web Service (Node/Vite)</span>
-              <ul className="space-y-1 text-stone-600 text-xs">
-                <li>• <strong>Build Command</strong>: <code className="font-mono text-[11px] bg-stone-200 px-1 rounded">npm install && npm run build</code></li>
-                <li>• <strong>Start Command</strong>: <code className="font-mono text-[11px] bg-stone-200 px-1 rounded">npm start</code></li>
-                <li>• <strong>Health Check Path</strong>: <code className="font-mono text-[11px] bg-stone-200 px-1 rounded">/api/health</code></li>
+            <div className="p-4 rounded-xl border border-emerald-300 bg-emerald-50/50 space-y-2">
+              <span className="font-bold text-emerald-950 block text-xs">⭐ Unified Single Web Service (FastAPI + React)</span>
+              <ul className="space-y-1 text-emerald-900 text-xs">
+                <li>• <strong>Build Command</strong>: <code className="font-mono text-[11px] bg-emerald-100 px-1 rounded">./build.sh</code></li>
+                <li>• <strong>Start Command</strong>: <code className="font-mono text-[11px] bg-emerald-100 px-1 rounded">uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT</code></li>
+                <li>• <strong>Public URL</strong>: Single URL serves both React UI at <code className="font-mono text-[11px] bg-emerald-100 px-1 rounded">/</code> and APIs at <code className="font-mono text-[11px] bg-emerald-100 px-1 rounded">/api/*</code></li>
+                <li>• <strong>Health Check Path</strong>: <code className="font-mono text-[11px] bg-emerald-100 px-1 rounded">/health</code></li>
                 <li>• <strong>RAM Consumption</strong>: &lt; 120 MB (Runs on free tier)</li>
               </ul>
             </div>
 
             <div className="p-4 rounded-xl border border-stone-200 bg-stone-50/50 space-y-2">
-              <span className="font-bold text-stone-900 block text-xs">Option B: Decoupled Python Service (FastAPI)</span>
+              <span className="font-bold text-stone-900 block text-xs">Manual Render Dashboard Settings</span>
               <ul className="space-y-1 text-stone-600 text-xs">
-                <li>• <strong>Build Command</strong>: <code className="font-mono text-[11px] bg-stone-200 px-1 rounded">pip install -r backend/requirements.txt</code></li>
-                <li>• <strong>Start Command</strong>: <code className="font-mono text-[11px] bg-stone-200 px-1 rounded">uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT</code></li>
-                <li>• <strong>Health Check Path</strong>: <code className="font-mono text-[11px] bg-stone-200 px-1 rounded">/health</code></li>
+                <li>• <strong>Runtime</strong>: <code className="font-mono text-[11px] bg-stone-200 px-1 rounded">Python 3</code></li>
+                <li>• <strong>Root Directory</strong>: <code className="font-mono text-[11px] bg-stone-200 px-1 rounded">.</code> (leave blank or dot)</li>
+                <li>• <strong>Chained Build</strong>: <code className="font-mono text-[11px] bg-stone-200 px-1 rounded">npm install && npm run build && pip install -r backend/requirements.txt</code></li>
+                <li>• <strong>Vite Dist Output</strong>: Served directly from root <code className="font-mono text-[11px] bg-stone-200 px-1 rounded">dist/</code></li>
               </ul>
             </div>
           </div>

@@ -93,17 +93,25 @@ OK
 
 ---
 
-## 🚢 Deploying to Render
+## 🚢 Deploying to Render (Single Web Service)
 
-This project includes a complete `render.yaml` configuration:
+GrowWise is configured to run as **one single Render Web Service and one public URL**.
 
-1. Connect your repository to **Render** via Blueprint.
-2. Render creates:
-   - **Static Site** (`growwise-frontend`):
-     - Build Command: `npm install && npm run build`
-     - Publish Directory: `dist`
-     - Env Var: `VITE_API_BASE_URL`
-   - **Web Service** (`growwise-api`):
-     - Build Command: `pip install -r backend/requirements.txt`
-     - Start Command: `uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT`
-     - Health Check Path: `/health`
+FastAPI directly serves the compiled Vite React frontend from `dist/` and all REST API endpoints under the same domain.
+
+### Option 1: Render Blueprint (Recommended)
+1. In the [Render Dashboard](https://dashboard.render.com), click **New +** → **Blueprint**.
+2. Connect your GitHub repository (`tharun-pandya/GrowWise-`).
+3. Render automatically provisions the single Web Service using `render.yaml`.
+4. Click **Apply**.
+
+### Option 2: Manual Web Service Setup
+1. Click **New +** → **Web Service** in Render.
+2. Connect your repository.
+3. Configure:
+   - **Environment**: `Python 3`
+   - **Root Directory**: `.`
+   - **Build Command**: `./build.sh` (or `npm install && npm run build && pip install -r backend/requirements.txt`)
+   - **Start Command**: `uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT`
+   - **Health Check Path**: `/health`
+4. Deploy! Your entire application and UI will be available at your single Render URL.

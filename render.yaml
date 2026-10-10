@@ -1,34 +1,14 @@
 # Render Blueprint: GrowWise - Grounded AI-Powered Garden Planner
-# React + TypeScript + Vite Static Site (Frontend) & FastAPI Web Service (Backend)
+# Single Unified Web Service: React + TypeScript + Vite frontend served via FastAPI backend
+# One service, one build, one public domain.
 services:
-  # 1. Frontend: React + TypeScript + Vite Static Site
-  - type: static
-    name: growwise-frontend
-    buildCommand: npm install && npm run build
-    staticPublishPath: dist
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
-    envVars:
-      - key: VITE_API_URL
-        fromService:
-          type: web
-          name: growwise-api
-          property: host
-      - key: VITE_API_BASE_URL
-        fromService:
-          type: web
-          name: growwise-api
-          property: host
-
-  # 2. Backend: Python FastAPI Web Service
   - type: web
-    name: growwise-api
+    name: growwise
+    rootDir: .
     env: python
     plan: free
     region: oregon
-    buildCommand: pip install -r backend/requirements.txt
+    buildCommand: ./build.sh
     startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     envVars:
@@ -39,7 +19,7 @@ services:
       - key: CORS_ORIGINS
         value: "*"
       - key: OPEN_WEIGHT_ENDPOINT_URL
-        sync: false     # Set to e.g. https://api.together.xyz/v1/chat/completions or private vLLM service
+        sync: false     # Optional: Set to e.g. https://api.together.xyz/v1/chat/completions or private vLLM service
       - key: OPEN_WEIGHT_MODEL_NAME
         value: google/gemma-2-2b-it
       - key: OPEN_WEIGHT_API_KEY
